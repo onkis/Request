@@ -26,7 +26,12 @@
 
 - (void)testExample
 {
-    STFail(@"Unit tests are not implemented yet in RequestTests");
+    Request *client = [Request client];
+    Request *anotherClient = [Request client];
+    NSLog(@"this is the client %@", client);
+    NSLog(@"this is the client %@", anotherClient);
+    NSLog(@"you are a dork");
+ //STFail(@"Unit tests are not implemented yet in RequestTests");
 }
 
 @end

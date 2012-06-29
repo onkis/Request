@@ -7,7 +7,7 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
-
+#import "Request.h"
 @interface RequestTests : SenTestCase
 
 @end
