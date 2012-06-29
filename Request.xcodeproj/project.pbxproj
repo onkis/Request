@@ -44,15 +44,15 @@
 /* Begin PBXFileReference section */
 		278B329D159E451600AEA149 /* libRequest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRequest.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		278B32A0159E451600AEA149 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		278B32A4159E451600AEA149 /* Request-Prefix.pch */ = {isa = PBXFileReference; path = "Request-Prefix.pch"; sourceTree = "<group>"; };
+		278B32A4159E451600AEA149 /* Request-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Request-Prefix.pch"; sourceTree = "<group>"; };
 		278B32A5159E451600AEA149 /* Request.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Request.h; sourceTree = "<group>"; };
 		278B32A7159E451600AEA149 /* Request.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Request.m; sourceTree = "<group>"; };
 		278B32AE159E451600AEA149 /* RequestTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RequestTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		278B32AF159E451600AEA149 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		278B32B1159E451600AEA149 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		278B32B9159E451600AEA149 /* RequestTests-Info.plist */ = {isa = PBXFileReference; path = "RequestTests-Info.plist"; sourceTree = "<group>"; };
+		278B32B9159E451600AEA149 /* RequestTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RequestTests-Info.plist"; sourceTree = "<group>"; };
 		278B32BB159E451600AEA149 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		278B32BD159E451600AEA149 /* RequestTests.h */ = {isa = PBXFileReference; path = RequestTests.h; sourceTree = "<group>"; };
+		278B32BD159E451600AEA149 /* RequestTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RequestTests.h; sourceTree = "<group>"; };
 		278B32BE159E451600AEA149 /* RequestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RequestTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -322,6 +322,7 @@
 		278B32C3159E451600AEA149 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/Request.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Request/Request-Prefix.pch";
@@ -334,6 +335,7 @@
 		278B32C4159E451600AEA149 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/Request.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Request/Request-Prefix.pch";

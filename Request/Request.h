@@ -10,4 +10,7 @@
 
 @interface Request : NSObject
 
++(Request *) client;
 @end
+
+
