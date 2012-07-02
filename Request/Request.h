@@ -11,7 +11,7 @@
 @end
 typedef void (^RequestResponseBlock)(RequestResponse* RequestResponse);
 
-@interface RequestResponse
+@interface RequestResponse()
 
 @property NSURLConnection *connection;
 @property NSHTTPURLResponse *response;
