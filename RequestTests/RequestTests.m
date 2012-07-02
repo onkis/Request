@@ -30,8 +30,18 @@
     Request *anotherClient = [Request client];
     NSLog(@"this is the client %@", client);
     NSLog(@"this is the client %@", anotherClient);
-    NSLog(@"you are a dork");
  //STFail(@"Unit tests are not implemented yet in RequestTests");
+}
+
+- (void)testGetRequests
+{
+    
+    [Request get:@"http://www.google.com" withBlock:^(NSDictionary* response){
+        NSLog(@"you are a dork");
+        NSLog(@"%@",[NSString stringWithUTF8String:[[response objectForKey:@"responseData" ] bytes]]);
+    }];
+    [[NSRunLoop currentRunLoop] run];
+    //STFail(@"Unit tests are not implemented yet in RequestTests");
 }
 
 @end
