@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-typedef void (^RequestResponseBlock)(NSObject* body);
+typedef void (^RequestResponseBlock)(NSDictionary* response);
 
 
 @interface Request : NSObject<NSURLConnectionDelegate>
@@ -20,6 +20,6 @@ typedef void (^RequestResponseBlock)(NSObject* body);
 
 //static stuff
 +(Request *) client;
-+(void) get:(NSString *)url swithBlock:(RequestResponseBlock)block;
++(void) get:(NSString *)url withBlock:(RequestResponseBlock)block;
 
 @end

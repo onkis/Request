@@ -15,6 +15,15 @@ static Request *requestClientManager = nil;
 //***********************************************************************
 //Instance Methods
 //***********************************************************************
+-(NSDictionary *)dictonaryForConnection:(NSURLConnection *)connection{
+    NSString *key = [NSString stringWithFormat:@"%u", connection.hash];
+    return self.requests[key];
+}
+
+
+//***********************************************************************
+//Instance Methods
+//***********************************************************************
 -(void) get:(NSString *)url withBlock:(RequestResponseBlock)block{
     
     NSURL *urlObj = [NSURL URLWithString:url];
@@ -23,9 +32,11 @@ static Request *requestClientManager = nil;
     
     NSURLConnection *connectionForGet = [NSURLConnection connectionWithRequest:request delegate:self];
     
-    NSString *key = [NSString stringWithFormat:@"%@",connectionForGet.hash];
-    
-    self.requests[key] = connectionForGet;
+    NSString *key = [NSString stringWithFormat:@"%u", connectionForGet.hash];
+    NSDictionary *responseDict = @{ @"connection" : connectionForGet, @"response": [NSNull null],
+                                    @"responseData": [NSNull null], @"responseCode": [NSNull null],
+                                    @"block":block};
+    self.requests[key] = responseDict;
     [connectionForGet start];
     //[request hash]
     
@@ -36,7 +47,6 @@ static Request *requestClientManager = nil;
 
 + (void) get:(NSString *)url withBlock:(RequestResponseBlock)block{
     Request *client = [Request client];
-    
     [client get:url withBlock:block];
 }
 
@@ -59,6 +69,38 @@ static Request *requestClientManager = nil;
 //Delegate Methods
 //***********************************************************************
 
+//not sure I understand this one but I believe I need it...
+- (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
+    
+}
 
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    NSDictionary* responceDict = [self dictonaryForConnection:connection];
+    
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+    
+    NSNumber *responseCode = [NSNumber numberWithInt:[httpResponse statusCode]];
+    
+    [responceDict setValue:httpResponse forKey:@"response"];
+    [responceDict setValue:responseCode forKey:@"responseCode"];
+    [responceDict setValue:[NSMutableData data] forKey:@"responseData"];
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    NSDictionary* responceDict = [self dictonaryForConnection:connection];
+    NSMutableData *responseData = [responceDict objectForKey:@"responseData"];
+    [responseData appendData:data];
+    [responceDict setValue:responseData forKey:@"responseData"];
+}
+
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"CONNECTION FAILED WITH ERROR: %@", [error description]);
+}
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSDictionary* responceDict = [self dictonaryForConnection:connection];
+    
+    void (^RequestResponseBlock)(NSDictionary* response) = [responceDict objectForKey:@"block"];
+    RequestResponseBlock(responceDict);
+}
 
 @end
