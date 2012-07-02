@@ -5,17 +5,20 @@
 //  Created by Mike Ball on 6/29/12.
 //  Copyright (c) 2012 Mike Ball. All rights reserved.
 //
-
 #import "Request.h"
+@implementation RequestResponse
+-(NSString *) responseDataToString{
+    return [NSString stringWithUTF8String:[self.responseData bytes]];
+}
+@end
 
 
 static Request *requestClientManager = nil;
-
 @implementation Request
 //***********************************************************************
 //Instance Methods
 //***********************************************************************
--(NSMutableDictionary *)dictonaryForConnection:(NSURLConnection *)connection{
+-(RequestResponse *)dictonaryForConnection:(NSURLConnection *)connection{
     NSString *key = [NSString stringWithFormat:@"%u", [connection hash]];
     NSLog(@"attempting to access key %@", key);
     return [self.requests objectForKey:key];
@@ -34,12 +37,17 @@ static Request *requestClientManager = nil;
     NSURLConnection *connectionForGet = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
     
     NSString *key = [NSString stringWithFormat:@"%u", [connectionForGet hash]];
-    NSDictionary *responseDict = @{ @"connection" : connectionForGet, @"response": [NSNull null],
-                                    @"responseData": [NSNull null], @"responseCode": [NSNull null],
-                                    @"block":block};
-    NSMutableDictionary *mutResponseDict = [NSMutableDictionary dictionaryWithDictionary:responseDict];
+    RequestResponse * responseObject = [[RequestResponse alloc] init];
     
-    [self.requests setObject:mutResponseDict forKey:key];
+//    NSDictionary *responseDict = @{ @"connection" : connectionForGet, @"response": [NSNull null],
+//                                    @"responseData": [NSNull null], @"responseCode": [NSNull null],
+//                                    @"block":block};
+//    NSMutableDictionary *mutResponseDict = [NSMutableDictionary dictionaryWithDictionary:responseDict];
+    
+    responseObject.connection = connectionForGet;
+    responseObject.block = block;
+    
+    [self.requests setObject:responseObject forKey:key];
     
     [connectionForGet start];
     //[request hash]
@@ -82,22 +90,22 @@ static Request *requestClientManager = nil;
 
 
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    NSMutableDictionary* responceDict = [self dictonaryForConnection:connection];
+    RequestResponse* responseObj = [self dictonaryForConnection:connection];
     
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     
     NSNumber *responseCode = [NSNumber numberWithInt:[httpResponse statusCode]];
-    
-    [responceDict setObject:httpResponse forKey:@"response"];
-    [responceDict setObject:responseCode forKey:@"responseCode"];
-    [responceDict setObject:[NSMutableData data] forKey:@"responseData"];
+    responseObj.responseCode = responseCode;
+    responseObj.responseData = [NSMutableData data];
+    responseObj.response = httpResponse;
+//    [responceDict setObject:httpResponse forKey:@"response"];
+//    [responceDict setObject:responseCode forKey:@"responseCode"];
+//    [responceDict setObject:[NSMutableData data] forKey:@"responseData"];
 }
 
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    NSDictionary* responceDict = [self dictonaryForConnection:connection];
-    NSMutableData *responseData = [responceDict objectForKey:@"responseData"];
-    [responseData appendData:data];
-    [responceDict setValue:responseData forKey:@"responseData"];
+    RequestResponse* responceObj = [self dictonaryForConnection:connection];
+    [responceObj.responseData appendData:data];
 }
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -105,10 +113,10 @@ static Request *requestClientManager = nil;
 }
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSDictionary* responceDict = [self dictonaryForConnection:connection];
+    RequestResponse* responceObj = [self dictonaryForConnection:connection];
     
-    RequestResponseBlock Block = (RequestResponseBlock)[responceDict objectForKey:@"block"];
-    Block(responceDict);
+    RequestResponseBlock Block = responceObj.block;
+    Block(responceObj);
 }
 
 @end

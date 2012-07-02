@@ -7,7 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-typedef void (^RequestResponseBlock)(NSDictionary* response);
+@interface RequestResponse : NSObject
+@end
+typedef void (^RequestResponseBlock)(RequestResponse* RequestResponse);
+
+@interface RequestResponse
+
+@property NSURLConnection *connection;
+@property NSHTTPURLResponse *response;
+@property NSNumber *responseCode;
+@property NSMutableData *responseData;
+@property RequestResponseBlock block;
+-(NSString *) responseDataToString;
+@end
+
+
 
 
 @interface Request : NSObject<NSURLConnectionDelegate>

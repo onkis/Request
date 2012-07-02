@@ -36,9 +36,9 @@
 - (void)testGetRequests
 {
     
-    [Request get:@"http://www.google.com" withBlock:^(NSDictionary* response){
+    [Request get:@"http://www.google.com" withBlock:^(RequestResponse* response){
         NSLog(@"you are a dork");
-        NSLog(@"%@",[NSString stringWithUTF8String:[[response objectForKey:@"responseData" ] bytes]]);
+        NSLog(@"%@",[response responseDataToString]);
     }];
     [[NSRunLoop currentRunLoop] run];
     //STFail(@"Unit tests are not implemented yet in RequestTests");
