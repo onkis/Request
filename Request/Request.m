@@ -7,8 +7,39 @@
 //
 
 #import "Request.h"
+
+
 static Request *requestClientManager = nil;
+
 @implementation Request
+//***********************************************************************
+//Instance Methods
+//***********************************************************************
+-(void) get:(NSString *)url withBlock:(RequestResponseBlock)block{
+    
+    NSURL *urlObj = [NSURL URLWithString:url];
+    
+    NSMutableURLRequest *request = [NSURLRequest requestWithURL:urlObj];
+    
+    NSURLConnection *connectionForGet = [NSURLConnection connectionWithRequest:request delegate:self];
+    
+    NSString *key = [NSString stringWithFormat:@"%@",connectionForGet.hash];
+    
+    self.requests[key] = connectionForGet;
+    [connectionForGet start];
+    //[request hash]
+    
+}
+//***********************************************************************
+//Class Methods
+//***********************************************************************
+
++ (void) get:(NSString *)url withBlock:(RequestResponseBlock)block{
+    Request *client = [Request client];
+    
+    [client get:url withBlock:block];
+}
+
 
 + (Request*) client {
     if (requestClientManager == nil) {
@@ -17,14 +48,17 @@ static Request *requestClientManager = nil;
     return requestClientManager;
 }
 
-+ (id)allocWithZone:(NSZone *)zone
-{
++ (id)allocWithZone:(NSZone *)zone{
     return [self client];
 }
 
-- (id)copyWithZone:(NSZone *)zone
-{
+- (id)copyWithZone:(NSZone *)zone{
     return self;
 }
+//***********************************************************************
+//Delegate Methods
+//***********************************************************************
+
+
 
 @end
