@@ -12,12 +12,12 @@
 typedef void (^RequestResponseBlock)(RequestResponse* RequestResponse);
 
 @interface RequestResponse()
-
-@property NSURLConnection *connection;
-@property NSHTTPURLResponse *response;
-@property NSNumber *responseCode;
-@property NSMutableData *responseData;
-@property RequestResponseBlock block;
+//should these all be (weak)?
+@property  NSURLConnection *connection;
+@property  NSHTTPURLResponse *response;
+@property  NSNumber *responseCode;
+@property  NSMutableData *responseData;
+@property  RequestResponseBlock block;
 -(NSString *) responseDataToString;
 @end
 
