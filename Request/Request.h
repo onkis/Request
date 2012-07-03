@@ -28,13 +28,12 @@ typedef void (^RequestResponseBlock)(RequestResponse* RequestResponse);
 @interface Request : NSObject<NSURLConnectionDelegate>
 //instance stuff
 @property NSMutableDictionary *requests;
--(void) get:(NSString *)url withBlock:(RequestResponseBlock)block;
-
-
-
 
 //static stuff
 +(Request *) client;
 +(void) get:(NSString *)url withBlock:(RequestResponseBlock)block;
++ (void) post:(NSString *)url body:(NSData*)body withBlock:(RequestResponseBlock)block;
++ (void) put:(NSString *)url body:(NSData*)body withBlock:(RequestResponseBlock)block;
++ (void) delete:(NSString *)url withBlock:(RequestResponseBlock)block;
 
 @end

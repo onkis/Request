@@ -34,26 +34,6 @@ static Request *requestClientManager = nil;
 //***********************************************************************
 //Instance Methods
 //***********************************************************************
--(void) get:(NSString *)url withBlock:(RequestResponseBlock)block{
-    [self request:url withBody:nil withHttpMethod:@"GET" withHeaders:nil withBlock:block];
-//    NSURL *urlObj = [NSURL URLWithString:url];
-//    
-//    NSMutableURLRequest *request = [NSURLRequest requestWithURL:urlObj];
-//    
-//    
-//    NSURLConnection *connectionForGet = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
-//    
-//    NSString *key = [NSString stringWithFormat:@"%u", [connectionForGet hash]];
-//    RequestResponse * responseObject = [[RequestResponse alloc] init];
-//        
-//    responseObject.connection = connectionForGet;
-//    responseObject.block = block;
-//    
-//    [self.requests setObject:responseObject forKey:key];
-//    
-//    [connectionForGet start];    
-}
-
 -(void) request:(NSString *)url
        withBody:(NSData *)body
  withHttpMethod:(NSString *)httpMethod
@@ -97,7 +77,22 @@ static Request *requestClientManager = nil;
 
 + (void) get:(NSString *)url withBlock:(RequestResponseBlock)block{
     Request *client = [Request client];
-    [client get:url withBlock:block];
+    [client request:url withBody:nil withHttpMethod:@"GET" withHeaders:nil withBlock:block];
+}
+
++ (void) post:(NSString *)url body:(NSData*)body withBlock:(RequestResponseBlock)block{
+    Request *client = [Request client];
+    [client request:url withBody:body withHttpMethod:@"POST" withHeaders:nil withBlock:block];
+}
+
++ (void) put:(NSString *)url body:(NSData*)body withBlock:(RequestResponseBlock)block{
+    Request *client = [Request client];
+    [client request:url withBody:body withHttpMethod:@"PUT" withHeaders:nil withBlock:block];
+}
+
++ (void) delete:(NSString *)url withBlock:(RequestResponseBlock)block{
+    Request *client = [Request client];
+    [client request:url withBody:nil withHttpMethod:@"DELETE" withHeaders:nil withBlock:block];
 }
 
 
