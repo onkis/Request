@@ -45,12 +45,11 @@ static Request *requestClientManager = nil;
     [request setHTTPMethod:httpMethod];
     
     if(httpHeaders){
-        NSEnumerator *enumerator = [httpHeaders keyEnumerator];
         //add all items
-        NSString *key;
-        while ((key = [enumerator nextObject])) {
-            [request addValue:httpHeaders[key] forHTTPHeaderField:key];
-        }
+        [httpHeaders enumerateKeysAndObjectsUsingBlock:^(id key, id object, BOOL *stop){
+            [request addValue:object forHTTPHeaderField:key];
+        }];
+        
     }
     
     //set header if present
