@@ -13,11 +13,11 @@ typedef void (^RequestResponseBlock)(RequestResponse* RequestResponse);
 
 @interface RequestResponse()
 //should these all be (weak)?
-@property  NSURLConnection *connection;
-@property  NSHTTPURLResponse *response;
-@property  NSNumber *responseCode;
-@property  NSMutableData *responseData;
-@property  RequestResponseBlock block;
+@property (strong) NSURLConnection *connection;
+@property (strong) NSHTTPURLResponse *response;
+@property (strong) NSNumber *responseCode;
+@property (strong) NSMutableData *responseData;
+@property (strong) RequestResponseBlock block;
 -(NSString *) responseDataToString;
 @end
 

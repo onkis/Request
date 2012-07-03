@@ -8,17 +8,24 @@
 #import "Request.h"
 @implementation RequestResponse
 -(NSString *) responseDataToString{
-    return [NSString stringWithUTF8String:[self.responseData bytes]];
+    return [NSString stringWithUTF8String:[_responseData bytes]];
 }
 @end
 
 
 static Request *requestClientManager = nil;
 @implementation Request
+-(id) init{
+    self = [super init];
+    if(self){
+        _requests = [[NSMutableDictionary alloc] init];
+    }
+    return self;
+}
 //***********************************************************************
 //Instance Methods
 //***********************************************************************
--(RequestResponse *)dictonaryForConnection:(NSURLConnection *)connection{
+-(RequestResponse *)responseObjectFor:(NSURLConnection *)connection{
     NSString *key = [NSString stringWithFormat:@"%u", [connection hash]];
     NSLog(@"attempting to access key %@", key);
     return [self.requests objectForKey:key];
@@ -33,6 +40,7 @@ static Request *requestClientManager = nil;
     NSURL *urlObj = [NSURL URLWithString:url];
     
     NSMutableURLRequest *request = [NSURLRequest requestWithURL:urlObj];
+    
     
     NSURLConnection *connectionForGet = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
     
@@ -66,7 +74,6 @@ static Request *requestClientManager = nil;
 + (Request*) client {
     if (requestClientManager == nil) {
         requestClientManager = [[super allocWithZone:NULL] init];
-        requestClientManager.requests = [[NSMutableDictionary alloc]init];
     }
     return requestClientManager;
 }
@@ -90,7 +97,7 @@ static Request *requestClientManager = nil;
 
 
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    RequestResponse* responseObj = [self dictonaryForConnection:connection];
+    RequestResponse* responseObj = [self responseObjectFor:connection];
     
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     
@@ -104,7 +111,7 @@ static Request *requestClientManager = nil;
 }
 
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    RequestResponse* responceObj = [self dictonaryForConnection:connection];
+    RequestResponse* responceObj = [self responseObjectFor:connection];
     [responceObj.responseData appendData:data];
 }
 
@@ -113,7 +120,7 @@ static Request *requestClientManager = nil;
 }
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    RequestResponse* responceObj = [self dictonaryForConnection:connection];
+    RequestResponse* responceObj = [self responseObjectFor:connection];
     
     RequestResponseBlock Block = responceObj.block;
     Block(responceObj);
