@@ -27,7 +27,6 @@ static Request *requestClientManager = nil;
 //***********************************************************************
 -(RequestResponse *)responseObjectFor:(NSURLConnection *)connection{
     NSString *key = [NSString stringWithFormat:@"%u", [connection hash]];
-    NSLog(@"attempting to access key %@", key);
     return [self.requests objectForKey:key];
 }
 
@@ -46,12 +45,7 @@ static Request *requestClientManager = nil;
     
     NSString *key = [NSString stringWithFormat:@"%u", [connectionForGet hash]];
     RequestResponse * responseObject = [[RequestResponse alloc] init];
-    
-//    NSDictionary *responseDict = @{ @"connection" : connectionForGet, @"response": [NSNull null],
-//                                    @"responseData": [NSNull null], @"responseCode": [NSNull null],
-//                                    @"block":block};
-//    NSMutableDictionary *mutResponseDict = [NSMutableDictionary dictionaryWithDictionary:responseDict];
-    
+        
     responseObject.connection = connectionForGet;
     responseObject.block = block;
     
@@ -105,9 +99,6 @@ static Request *requestClientManager = nil;
     responseObj.responseCode = responseCode;
     responseObj.responseData = [NSMutableData data];
     responseObj.response = httpResponse;
-//    [responceDict setObject:httpResponse forKey:@"response"];
-//    [responceDict setObject:responseCode forKey:@"responseCode"];
-//    [responceDict setObject:[NSMutableData data] forKey:@"responseData"];
 }
 
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -116,7 +107,14 @@ static Request *requestClientManager = nil;
 }
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"CONNECTION FAILED WITH ERROR: %@", [error description]);
+    //NSLog(@"CONNECTION FAILED WITH ERROR: %@", [error description]);
+    
+    
+    RequestResponse* responceObj = [self responseObjectFor:connection];
+    responceObj.error = error;
+    //TODO: do I need to call the callback here?
+    RequestResponseBlock Block = responceObj.block;
+    Block(responceObj);
 }
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
