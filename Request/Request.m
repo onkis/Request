@@ -94,6 +94,28 @@ static Request *requestClientManager = nil;
     Request *client = [Request client];
     [client request:url withBody:nil withHttpMethod:@"DELETE" withHeaders:nil withBlock:block];
 }
+//*********************************
+// With headers
+//*********************************
++ (void) get:(NSString *)url withHeaders:(NSDictionary *)headers withBlock:(RequestResponseBlock)block{
+    Request *client = [Request client];
+    [client request:url withBody:nil withHttpMethod:@"GET" withHeaders:headers withBlock:block];
+}
+
++ (void) post:(NSString *)url withHeaders:(NSDictionary *)headers body:(NSData*)body withBlock:(RequestResponseBlock)block{
+    Request *client = [Request client];
+    [client request:url withBody:body withHttpMethod:@"POST" withHeaders:headers withBlock:block];
+}
+
++ (void) put:(NSString *)url withHeaders:(NSDictionary *)headers body:(NSData*)body withBlock:(RequestResponseBlock)block{
+    Request *client = [Request client];
+    [client request:url withBody:body withHttpMethod:@"PUT" withHeaders:headers withBlock:block];
+}
+
++ (void) delete:(NSString *)url withHeaders:(NSDictionary *)headers withBlock:(RequestResponseBlock)block{
+    Request *client = [Request client];
+    [client request:url withBody:nil withHttpMethod:@"DELETE" withHeaders:headers withBlock:block];
+}
 
 
 + (Request*) client {
