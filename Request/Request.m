@@ -27,7 +27,7 @@ static Request *requestClientManager = nil;
 //***********************************************************************
 -(RequestResponse *)responseObjectFor:(NSURLConnection *)connection{
     NSString *key = [NSString stringWithFormat:@"%u", [connection hash]];
-    return [self.requests objectForKey:key];
+    return _requests[key];
 }
 
 
@@ -35,26 +35,62 @@ static Request *requestClientManager = nil;
 //Instance Methods
 //***********************************************************************
 -(void) get:(NSString *)url withBlock:(RequestResponseBlock)block{
+    [self request:url withBody:nil withHttpMethod:@"GET" withHeaders:nil withBlock:block];
+//    NSURL *urlObj = [NSURL URLWithString:url];
+//    
+//    NSMutableURLRequest *request = [NSURLRequest requestWithURL:urlObj];
+//    
+//    
+//    NSURLConnection *connectionForGet = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
+//    
+//    NSString *key = [NSString stringWithFormat:@"%u", [connectionForGet hash]];
+//    RequestResponse * responseObject = [[RequestResponse alloc] init];
+//        
+//    responseObject.connection = connectionForGet;
+//    responseObject.block = block;
+//    
+//    [self.requests setObject:responseObject forKey:key];
+//    
+//    [connectionForGet start];    
+}
+
+-(void) request:(NSString *)url
+       withBody:(NSData *)body
+ withHttpMethod:(NSString *)httpMethod
+    withHeaders:(NSDictionary *)httpHeaders
+      withBlock:(RequestResponseBlock)block{
+        
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+    //set the http method
+    [request setHTTPMethod:httpMethod];
     
-    NSURL *urlObj = [NSURL URLWithString:url];
+    if(httpHeaders){
+        NSEnumerator *enumerator = [httpHeaders keyEnumerator];
+        //add all items
+        NSString *key;
+        while ((key = [enumerator nextObject])) {
+            [request addValue:httpHeaders[key] forHTTPHeaderField:key];
+        }
+    }
     
-    NSMutableURLRequest *request = [NSURLRequest requestWithURL:urlObj];
+    //set header if present
+    if(body) [request setHTTPBody:body];
     
-    
+    //createCOnnection
     NSURLConnection *connectionForGet = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
     
-    NSString *key = [NSString stringWithFormat:@"%u", [connectionForGet hash]];
+    NSString *connectionKey = [NSString stringWithFormat:@"%u", [connectionForGet hash]];
     RequestResponse * responseObject = [[RequestResponse alloc] init];
         
     responseObject.connection = connectionForGet;
     responseObject.block = block;
-    
-    [self.requests setObject:responseObject forKey:key];
+    _requests[connectionKey] = responseObject;
+    //[self.requests setObject:responseObject forKey:key];
     
     [connectionForGet start];
-    //[request hash]
     
 }
+
 //***********************************************************************
 //Class Methods
 //***********************************************************************

@@ -18,7 +18,7 @@ typedef void (^RequestResponseBlock)(RequestResponse* RequestResponse);
 @property (strong) NSNumber *responseCode;
 @property (strong) NSMutableData *responseData;
 @property (strong) RequestResponseBlock block;
-@property (strong) NSerror *error;
+@property (strong) NSError *error;
 -(NSString *) responseDataToString;
 @end
 
