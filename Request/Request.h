@@ -36,4 +36,8 @@ typedef void (^RequestResponseBlock)(RequestResponse* RequestResponse);
 + (void) put:(NSString *)url body:(NSData*)body withBlock:(RequestResponseBlock)block;
 + (void) delete:(NSString *)url withBlock:(RequestResponseBlock)block;
 
++ (void) get:(NSString *)url withHeaders:(NSDictionary *)headers withBlock:(RequestResponseBlock)block;
++ (void) post:(NSString *)url withHeaders:(NSDictionary *)headers body:(NSData*)body withBlock:(RequestResponseBlock)block;
++ (void) put:(NSString *)url withHeaders:(NSDictionary *)headers body:(NSData*)body withBlock:(RequestResponseBlock)block;
++ (void) delete:(NSString *)url withHeaders:(NSDictionary *)headers withBlock:(RequestResponseBlock)block;
 @end
