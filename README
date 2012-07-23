@@ -1,0 +1,6 @@
+Request is a simple http lib for iOS.  It attempts to match the simplicity of node's request.
+It requires XCode 4.5 and uses ARC.  It's really easy to use:
+
+[Request get:@"http://www.google.com" withBlock:^(RequestResponse* response){
+    NSLog(@"%@",[response responseDataToString]);
+}];
