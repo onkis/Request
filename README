@@ -4,3 +4,9 @@ It requires XCode 4.5 and uses ARC.  It's really easy to use:
 [Request get:@"http://www.google.com" withBlock:^(RequestResponse* response){
     NSLog(@"%@",[response responseDataToString]);
 }];
+
+TOOD:
+add documentation
+add better oauth and http auth support
+add cookie jar (a place to keep cookies)
+add some real tests :)
