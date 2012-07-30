@@ -30,6 +30,12 @@ static Request *requestClientManager = nil;
     return [_requests objectForKey:key];
 }
 
+-(void)removeResposneObjectFor:(NSURLConnection *)connection{
+    NSString *key = [NSString stringWithFormat:@"%u", [connection hash]];
+    [_requests removeObjectForKey:key];
+}
+
+
 
 //***********************************************************************
 //Instance Methods
@@ -167,6 +173,8 @@ static Request *requestClientManager = nil;
     //TODO: do I need to call the callback here?
     RequestResponseBlock Block = responceObj.block;
     Block(responceObj);
+    [self removeResposneObjectFor: connection];
+    
 }
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
@@ -174,6 +182,8 @@ static Request *requestClientManager = nil;
     
     RequestResponseBlock Block = responceObj.block;
     Block(responceObj);
+    [self removeResposneObjectFor: connection];
+    
 }
 
 @end
