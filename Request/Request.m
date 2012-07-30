@@ -27,7 +27,7 @@ static Request *requestClientManager = nil;
 //***********************************************************************
 -(RequestResponse *)responseObjectFor:(NSURLConnection *)connection{
     NSString *key = [NSString stringWithFormat:@"%u", [connection hash]];
-    return _requests[key];
+    return [_requests objectForKey:key];
 }
 
 
@@ -63,7 +63,7 @@ static Request *requestClientManager = nil;
         
     responseObject.connection = connectionForGet;
     responseObject.block = block;
-    _requests[connectionKey] = responseObject;
+    [_requests setObject:responseObject forKey:connectionKey];
     //[self.requests setObject:responseObject forKey:key];
     
     [connectionForGet start];

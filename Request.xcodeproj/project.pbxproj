@@ -326,6 +326,7 @@
 				DSTROOT = /tmp/Request.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Request/Request-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -339,6 +340,7 @@
 				DSTROOT = /tmp/Request.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Request/Request-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -394,6 +396,7 @@
 				278B32C4159E451600AEA149 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		278B32C5159E451600AEA149 /* Build configuration list for PBXNativeTarget "RequestTests" */ = {
 			isa = XCConfigurationList;
@@ -402,6 +405,7 @@
 				278B32C7159E451600AEA149 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
